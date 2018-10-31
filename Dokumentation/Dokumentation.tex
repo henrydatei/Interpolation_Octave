@@ -52,7 +52,7 @@ for i=1:n
  n(i) = f(i);
 endfor
 
-plot(x, f, "-;Interpolation;", xreal, runge(xreal), "-;Rungefunktion;")
+plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 \end{lstlisting}
 
 	Das Interessante hierbei ist, dass die berechneten Werte in den Arrays \texttt{m} und \texttt{n} gar nicht für die Interpolation gebraucht werden - die Funktion \texttt{plot} interpoliert automatisch linear, wenn man ihr die Stützstellen und -werte übergibt.
@@ -72,7 +72,8 @@ plot(x, f, "-;Interpolation;", xreal, runge(xreal), "-;Rungefunktion;")
 
 \section{Interpolation der anderen Funktion}
 	\begin{align}
-		f(x) = \left( 1+\cos\left(\frac{3}{2}\pi x \right) \right)^{\sfrac{2}{3}}\notag
+		f(x) &= \left( 1+\cos\left(\frac{3}{2}\pi x \right) \right)^{\sfrac{2}{3}}\notag \\
+		f'(x) &=-\frac{\pi\sin\left(\frac{3}{2}\pi x\right)}{\sqrt[3]{1+\cos\left(\frac{3}{2}\pi x \right)}}\notag
 	\end{align}
 	
 	\subsection{Berechnung der Splines}
