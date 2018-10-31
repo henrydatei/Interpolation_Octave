@@ -106,7 +106,7 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mygreen}{rgb}{0,0.8,0.26}
 
-\lstset{language=[95]Fortran,
+\lstset{language=Octave,
   basicstyle=\ttfamily,
   keywordstyle=\color{lila},
   commentstyle=\color{lightgray},
@@ -118,9 +118,8 @@
   numbersep=10pt,
   numberstyle=\color{mygray}\ttfamily,
   identifierstyle=\color{blue},
-  xleftmargin=.2\textwidth, 
-  xrightmargin=.2\textwidth,
-  escapechar=\%
+  xleftmargin=.1\textwidth, 
+  xrightmargin=.1\textwidth
 }
 
 \RequirePackage[unicode,bookmarks=true]{hyperref}
@@ -206,48 +205,6 @@
 	\def\mathbb#1{<#1>}%
 }
 \reqnos
-
-%Headings
-\titlelabel{\thetitle.\quad}%. behind section/sub... (3. instead of 3)
-\renewcommand{\thepart}{\Alph{part}}
-%italic chapters (due to titlesec package some more stuff)
-%\titleformat{command}[shape]{format}{label}{sep}{before-code}[after-code]
-\titleformat{\chapter}[display]{\bfseries}{\Large\chaptername\;\thechapter}{-5pt}{\huge\bfseries\itshape}
-\titlespacing{\chapter}{0pt}{0pt}{10pt}
-\titleformat{\section}[hang]{\bfseries\Large}{\thesection.}{8pt}{\Large\bfseries}
-%\titlespacing{command}{left}{before-sep}{after-sep}
-\titlespacing{\subsection}{0pt}{0pt}{5pt}
-
-% Add new page-style (just footer), patch \chapter command to use this page style
-\fancypagestyle{plainChapter}{%
-	\fancyhf{}%
-	\fancyfoot[C]{\thepage}%
-	\renewcommand{\headrulewidth}{0pt}% Line at the header invisible
-	\renewcommand{\footrulewidth}{0.4pt}% Line at the footer visible
-}
-%changes pagestyle; instead of empty page the normal footer is printed
-\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{plainChapter}}{}{}
-%usually, after a new chapter the section counter needs to be reset manually. Instead, automatic reset
-
-\pagestyle{fancy}
-\pagenumbering{arabic}
-%remember chapter-title in \leftmark and \rightmark
-\renewcommand{\chaptermark}[1]{%
-	\markboth{\chaptername
-		\ \thechapter:\ #1}{}}
-%remember section title in \leftmark
-\renewcommand{\sectionmark}[1]{%
-	\markright{\thesection.\ #1}{}}
-
-%remove page number from part{}-pages
-\let\sv@endpart\@endpart
-\def\@endpart{\thispagestyle{empty}\sv@endpart}
-
-%change header:
-\renewcommand{\headrulewidth}{0.75pt}
-\renewcommand{\footrulewidth}{0.3pt}
-\lhead{\rightmark}%left: section-number. section-title
-\rhead{\leftmark}%right: chapter chapternumber: chapter-title
 
 %change numbering of equations to be section by section
 \counterwithout{equation}{section}
