@@ -47,6 +47,7 @@ for i=1:N
   endfor
 endfor
 
+%Fehler an letzter Stuetzstelle ist 0
 y_Fehler(k) = 0;
 
 figure(2);

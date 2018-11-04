@@ -63,10 +63,44 @@ plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 		\includegraphics[width=0.9\textwidth]{images/Runge_lineare_Interpolation.png}
 		\caption{lineare Splineinterpolation mit $N=16$}
 	\end{figure}
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/Runge_lineare_Interpolation_Fehler.png}
+		\caption{Fehler bei linearer Splineinterpolation mit $N=16$}
+	\end{figure}
 	
 	\subsubsection{Polynomsplines aus $\mathcal{S}_3^1(\Delta)$}
 	
 	\subsection{Fehlerbetrachtung}
+	
+	Da $\Delta_M$ zehnmal so fein wie $\Delta_N$ ist, bedeutet das, dass man für jeden Spline den Fehler in 10 Punkten in seinem Definitionsbereich berechnet.
+	
+	Bei linearer Interpolation kann man also deswegen den Fehler nach folgendem Muster ausrechnen:
+	\begin{align}
+		\text{Fehler} = \vert f(x) - (n + \text{Abstand zur nächsten Stützstelle}\cdot m) \vert \notag
+	\end{align}
+	wobei $n$ und $m$ zum jeweiligen Spline gehören und $x$ die Werte in $\Delta_M$ durchläuft. Der Quelltext dazu sieht folgendermaßen aus:
+\begin{lstlisting}
+M = 10 * N
+h_neu = 2/M
+x_Fehler = -1:h_neu:1;
+
+k = 1;
+for i=1:N
+ %in jedem dieser Durchlauufe ist der Spline-Abschnitt der Selbe
+ for j=1:10
+  y_Fehler(k) = abs(runge(x_Fehler(k)) - ...
+   (n(i) + abs(abs(x_Fehler(k)) - abs(x(i))) * m(i)));
+  k = k + 1;
+ endfor
+endfor
+
+%Fehler an letzter Stuetzstelle ist 0
+y_Fehler(k) = 0;
+
+plot(x_Fehler, y_Fehler, "-; Fehler;")
+\end{lstlisting}
 	
 	\subsection{Diskussion der Ergebnisse}
 
