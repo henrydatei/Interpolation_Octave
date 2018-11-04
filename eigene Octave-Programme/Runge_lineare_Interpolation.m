@@ -3,20 +3,20 @@ clear all
 runge = @(x) 1./(1+25*x.^2);
 xreal = -1:0.01:1;
 
-n = input('Anzahhl der Stuetzstellen - 1 := N: ')
+N = input('Anzahhl der Stuetzstellen - 1 := N: ')
 
 %Schritweite h berechnen
-h = 2/n
+h = 2/N
 
 %Stuetzstellenvektor x berechnen
 x = -1:h:1;
 
-for i=1:n+1
+for i=1:N+1
   %Stutzwertevektor f berechnen
   f(i) = runge(x(i));
 endfor
 
-for i=1:n
+for i=1:N
   %Anstiege m_i berechnen
   m(i) = (f(i+1)-f(i))./(x(i+1)-x(i));
   %Achsenabschnitte n_i berechnen
@@ -29,3 +29,21 @@ m
 n
 
 plot(x, f, "-;Interpolation;", xreal, runge(xreal), "-;Rungefunktion;")
+
+%Fehlerfunktion berechnen
+M = 10 * N
+h_neu = 2/M
+x_Fehler = -1:h_neu:1;
+
+k = 1;
+for i=1:N
+  %in jedem dieser Durchläufe ist der Spline-Abschnitt der Selbe
+  for j=1:10
+    y_Fehler(k) = abs(runge(x_Fehler(k)) - (n(i) + abs(abs(x_Fehler(k)) - abs(x(i))) * m(i)));
+    k = k + 1;
+  endfor
+endfor
+
+y_Fehler(k) = 0;
+
+plot(x_Fehler, y_Fehler, "-; Fehler;")
