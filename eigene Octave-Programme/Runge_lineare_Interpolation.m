@@ -28,9 +28,12 @@ f
 m
 n
 
+
+figure(1);
 plot(x, f, "-;Interpolation;", xreal, runge(xreal), "-;Rungefunktion;")
 
 %Fehlerfunktion berechnen
+figure;
 M = 10 * N
 h_neu = 2/M
 x_Fehler = -1:h_neu:1;
@@ -46,4 +49,5 @@ endfor
 
 y_Fehler(k) = 0;
 
+figure(2);
 plot(x_Fehler, y_Fehler, "-; Fehler;")
