@@ -80,7 +80,7 @@ plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 	\begin{align}
 		\text{Fehler} = \vert f(x) - (n + \text{Abstand zur nächsten Stützstelle}\cdot m) \vert \notag
 	\end{align}
-	wobei $n$ und $m$ zum jeweiligen Spline gehören und $x$ die Werte in $\Delta_M$ durchläuft. Der Quelltext dazu sieht folgendermaßen aus:
+	wobei $n$ und $m$ zum jeweiligen Spline gehören und $x$ die Werte in $\Delta_M$ durchläuft. Da die Fehlerfunktion laut Aufgabenstellung an den Stützstellen der Zerlegung $\Delta_M$ zu berechnen ist, lässt sich der nachfolgende Code auch für die Abschätzung des Fehlers (der auch an den Stützstellen von $\Delta_M$ gesucht ist) wiederverwenden. Der Quelltext dazu sieht folgendermaßen aus:
 \begin{lstlisting}
 M = 10 * N
 h_neu = 2/M
@@ -100,9 +100,29 @@ endfor
 y_Fehler(k) = 0;
 
 plot(x_Fehler, y_Fehler, "-; Fehler;")
+
+% maximaler Fehler E
+E = max(y_Fehler)
 \end{lstlisting}
 	
 	\subsection{Diskussion der Ergebnisse}
+	
+	Der maximale Fehler $E(h_N)$ für $N=N_k=4\cdot 2^k$ mit $k=0,...,4$ beträgt:
+	\begin{center}
+		\begin{tabular}{ll|l}
+			$k$ & $N$ & $E(h_N)$ \\
+			\hline
+			0 & 4 & 0.17872 \\
+			\hline
+			1 & 8 & 0.063128 \\
+			\hline 
+			2 & 16 & 0.053536 \\
+			\hline 
+			3 & 32 & 0.020652 \\
+			\hline 
+			4 & 64 & 0.0058496 \\
+		\end{tabular}
+	\end{center} 
 
 
 \section{Interpolation der anderen Funktion}

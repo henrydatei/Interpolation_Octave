@@ -23,12 +23,6 @@ for i=1:N
   n(i) = f(i);
 endfor
 
-x
-f
-m
-n
-
-
 figure(1);
 plot(x, f, "-;Interpolation;", xreal, runge(xreal), "-;Rungefunktion;")
 
@@ -52,3 +46,6 @@ y_Fehler(k) = 0;
 
 figure(2);
 plot(x_Fehler, y_Fehler, "-; Fehler;")
+
+% maximaler Fehler E
+E = max(y_Fehler)
