@@ -136,11 +136,22 @@ endfor
 s(k) = f(N+1);
 
 figure(1);
-plot(x_fein, runge(x_fein), "-;Rungefunktion;", x_fein, ...
+plot(x_fein, runge(x_fein), "-;Funktion;", x_fein, ...
 s,"-;Interpolation;")
 	\end{lstlisting}
 	
-	%TODO: Abbildungen: Runge + Interpolation und Fehler mit N=16
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/Runge_kubische_Interpolation.png}
+		\caption{kubische Splineinterpolation mit $N=16$}
+	\end{figure}
+	\pagebreak
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/Runge_kubische_Interpolation_Fehler.png}
+		\caption{Fehler bei kubischer Splineinterpolation mit $N=16$}
+	\end{figure}
 	
 	\subsection{Fehlerbetrachtung}
 	
@@ -205,7 +216,7 @@ E = max(y_Fehler);
 	Der maximale Fehler $E(h_N)$ für $N=N_k=4\cdot 2^k$ mit $k=0,...,4$ beträgt:
 	\begin{center}
 		\begin{tabular}{ll|l|l}
-			$k$ & $N$ & $E(h_N)$ linear & $E(h_N)$ kubisch \\
+			$k$ & $N_k$ & $E(h_{N_k})$ $\mathcal{S}_1^0$ & $E(h_{N_k})$ $\mathcal{S}_3^1$ \\
 			\hline
 			0 & 4 & 0.17872 & 0.21938 \\
 			\hline
@@ -224,34 +235,34 @@ Man sieht also, dass bei großen $N$ der Fehler sehr klein wird und die kubische
 Die exponentielle Konvergenzordnung ist
 \begin{center}
 	\begin{tabular}{ll|l|l}
-		$k$ & $N$ & $EOC(h_{N_k},h_{N_{k+1}})$ linear & $EOC(h_{N_k},h_{N_{k+1}})$ kubisch \\
+		$k$ & $N_k$ & $EOC(h_{N_k},h_{N_{k+1}})$ $\mathcal{S}_1^0$ & $EOC(h_{N_k},h_{N_{k+1}})$ $\mathcal{S}_3^1$ \\
 		\hline
-		0 & 4 & & 2.6272\\
+		0 & 4 & 1.5013 & 2.6272\\
 		\hline
-		1 & 8 & & 4.3901\\
+		1 & 8 & 0.2378 & 4.3901\\
 		\hline
-		2 & 16 & & 2.1237\\
+		2 & 16 & 1.3742 & 2.1237\\
 		\hline
-		3 & 32 & & 3.5334\\
+		3 & 32 & 1.8199 & 3.5334\\
 		\hline
-		4 & 64 & & 3.8869\\
+		4 & 64 & 1.9541 & 3.8869\\
 		\hline
-		5 & 128 & & 3.9719\\
+		5 & 128 & 1.9885 & 3.9719\\
 		\hline
-		6 & 256 & & 3.9930\\
+		6 & 256 & 1.9971 & 3.9930\\
 		\hline
-		7 & 512 & & 3.9982\\
+		7 & 512 & 1.9992 & 3.9982\\
 		\hline
-		8 & 1024 & & 3.9996\\
+		8 & 1024 & 1.9998 & 3.9996\\
 		\hline
-		9 & 2048 & & 3.9999\\
+		9 & 2048 & 2.0000 & 3.9999\\
 		\hline
-		10 & 4096 & & 4.0000\\
+		10 & 4096 & 2.0000 & 4.0000\\
 		\hline
 	\end{tabular}
 \end{center}
 
-Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$
+Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$. Da EOC ein Maß für die Konvergenzgeschwindigkeit ist, bedeutet das, dass die kubische Spline-Interpolation doppelt so schnell gegen die \person{Runge}-Funktion konvergiert wie die lineare Interpolation.
 
 \section{Interpolation der anderen Funktion}
 	\begin{align}
@@ -262,58 +273,81 @@ Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$
 	\subsection{Berechnung der Splines}
 	Für Rechenvorschrift siehe \ref{1.1}
 	
-	%TODO: 4 Bilder einfügen
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/f_lineare_Interpolation.png}
+		\caption{lineare Splineinterpolation mit $N=16$}
+	\end{figure}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/f_lineare_Interpolation_Fehler.png}
+		\caption{Fehler bei linearer Splineinterpolation mit $N=16$}
+	\end{figure}
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/f_kubische_Interpolation.png}
+		\caption{kubische Splineinterpolation mit $N=16$}
+	\end{figure}
+	\pagebreak
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.9\textwidth]{images/f_kubische_Interpolation_Fehler.png}
+		\caption{Fehler bei kubischer Splineinterpolation mit $N=16$}
+	\end{figure}
 	
 	\subsection{Diskussion der Ergebnisse}
 	
 	Der maximale Fehler beträgt
 	\begin{center}
 		\begin{tabular}{ll|l|l}
-			$k$ & $N$ & $E(h_N)$ linear & $E(h_N)$ kubisch \\
+			$k$ & $N_k$ & $E(h_{N_k})$ $\mathcal{S}_1^0$ & $E(h_{N_k})$ $\mathcal{S}_3^1$ \\
 			\hline
-			0 & 4 &   & 0.19577 \\
+			0 & 4 & 0.61130 & 0.19577 \\
 			\hline
-			1 & 8 &  & 0.070736 \\
+			1 & 8 & 0.26300 & 0.070736 \\
 			\hline 
-			2 & 16 &   & 0.027316 \\
+			2 & 16 & 0.10648 & 0.027316 \\
 			\hline 
-			3 & 32 &   & 0.010764 \\
+			3 & 32 & 0.042468 & 0.010764 \\
 			\hline 
-			4 & 64 &  & 0.0042640 \\
+			4 & 64 & 0.016874 & 0.0042640 \\
 		\end{tabular}
 	\end{center} 
 
 	Die exponentielle Konvergenzordnung ist
 	\begin{center}
 		\begin{tabular}{ll|l|l}
-			$k$ & $N$ & $EOC(h_{N_k},h_{N_{k+1}})$ linear & $EOC(h_{N_k},h_{N_{k+1}})$ kubisch \\
+			$k$ & $N_k$ & $EOC(h_{N_k},h_{N_{k+1}})$ $\mathcal{S}_1^0$ & $EOC(h_{N_k},h_{N_{k+1}})$ $\mathcal{S}_3^1$ \\
 			\hline
-			0 & 4 & &1.4686  \\
+			0 & 4 & 1.2168 & 1.4686  \\
 			\hline
-			1 & 8 & & 1.3727\\
+			1 & 8 & 1.3045 & 1.3727\\
 			\hline
-			2 & 16 & & 1.3436 \\
+			2 & 16 & 1.3261 & 1.3436 \\
 			\hline
-			3 & 32 & & 1.3359 \\
+			3 & 32 & 1.3316 & 1.3359 \\
 			\hline
-			4 & 64 & & 1.3340 \\
+			4 & 64 & 1.3328 & 1.3340 \\
 			\hline
-			5 & 128 & & 1.3335 \\
+			5 & 128 & 1.3332 & 1.3335 \\
 			\hline
-			6 & 256 & & 1.3334 \\
+			6 & 256 & 1.3332 & 1.3334 \\
 			\hline
-			7 & 512 & & 1.3333 \\
+			7 & 512 & 1.3333 & 1.3333 \\
 			\hline
-			8 & 1024 & & 1.3333 \\
+			8 & 1024 & 1.3333 & 1.3333 \\
 			\hline
-			9 & 2048 & & 1.3333 \\
+			9 & 2048 & 1.3333 & 1.3333 \\
 			\hline
-			10 & 4096 & & 1.3333 \\
+			10 & 4096 & 1.3333 & 1.3333 \\
 			\hline
 		\end{tabular}
 	\end{center}
 	
-	Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$.
+	Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$. Wenn EOC ein Maß für die Konvergenzgeschwindigkeit ist, dann konvergieren beide Ansätze - lineare und kubische Splieinterpolation - gleich schnell gegen diese Funktion.
 	
 	Offensichtlich ist diese Funktion nicht so gut für eine Splineinterpolation geeignet wie die \person{Runge}-Funktion, weil die maximalen Fehler größer sind und die EOC kleiner ist.
 
