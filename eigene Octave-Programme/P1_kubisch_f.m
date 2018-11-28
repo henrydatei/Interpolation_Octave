@@ -46,7 +46,7 @@ for l = 0:11
   s(k) = f(N+1);
   %Plot Interpolation
 %  figure(1);
-%  plot(x_fein, fun(x_fein), "-;Rungefunktion;", x_fein, s,"-;Interpolation;")
+%  plot(x_fein, fun(x_fein), "-;Funktion;", x_fein, s,"-;Interpolation;")
 
 %  figure;
   %Fehlerfunktion
