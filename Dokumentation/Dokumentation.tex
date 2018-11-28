@@ -16,7 +16,7 @@
 		f' (x) &= -\frac{50x}{625x^4+50x^2+1}\notag
 	\end{align}
 	
-	\subsection{Berechnung der Splines}
+	\subsection{Berechnung der Splines}\label{1.1}
 	\subsubsection{Polynomsplines aus $\mathcal{S}_1^0(\Delta)$}
 	
 	Eine Polynomspline $s\in\mathcal{S}_1^0(\Delta)$ ist eine affin lineare Funktion, das heißt er hat die Form $s(x)=mx+n$ mit Anstieg $m$ und $y$-Achsenverschiebung $n$. 
@@ -72,6 +72,76 @@ plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 	
 	\subsubsection{Polynomsplines aus $\mathcal{S}_3^1(\Delta)$}
 	
+	Das die Interpolationssplines Polynome dritten Grades und einmal stetig differenzierbar sein sollen, nehmen wird aus der Vorlesung den Ansatz (1.7):
+	\begin{align}
+		s_k(x) = a_k(x-x_k)^3 + b_k(x-x_k)^2 + c_k(x-x_k) + d_k\notag
+	\end{align}
+	mit $x\in[x_k,x_{k+1}]$. Die Vorfaktoren $a_k$, $b_k$, $c_k$ und $d_k$ ergeben sich aus (1.9) und (1.10) in der Vorlesung.
+	\begin{align}
+		d_k &= f_k \notag \\
+		c_k &= m_k = s'(x_k) = f'(x_k) \notag \\
+		\begin{pmatrix}
+			h_k^3 & h_k^2 \\ 3h_k^2 & 2h_k
+		\end{pmatrix}\begin{pmatrix}
+			a_k \\ b_k
+		\end{pmatrix} &= \begin{pmatrix}
+			f_{k+1} - f_k - m_kh_k \\ m_{k+1} - m_k
+		\end{pmatrix}\notag
+	\end{align}
+	wobei $h_k$ mit $\frac{2}{N}$ gegeben war. Der Quelltext sieht dann folgendermaßen aus:
+	\begin{lstlisting}
+runge = @(x) 1./(1+25*x.^2);
+runge_abl = @(x) (-50*x)/(1+25*x^2)^2;
+xreal = -1:0.01:1;
+
+N = input('Anzahl der Stuetzstellen -1 :=N : ')
+
+%Abstand Stuetzstellen h
+h = 2./N;
+
+%Stuetzstellen x
+x = -1:h:1;
+
+for i = 1:N+1
+ %Stuetzwerte f
+ f(i) = runge(x(i));
+ %Ableitungen
+ m(i) = runge_abl(x(i));
+endfor
+
+%Berechnung a_k, b_k nach 1.10
+H = [h^3 , h^2 ; 3*h^2 , 2*h];
+for i = 1:N
+ r = H\[f(i+1)-f(i)-m(i)*h ; m(i+1)-m(i)];
+ a(i) = r(1);
+ b(i) = r(2);
+ %c(i) = m(i)
+ %d(i) = f(i)
+endfor
+
+%Interpolierende und Runge plotten auf Zerlegung M
+M = 10 * N;
+h_fein = 2/M;
+x_fein = -1:h_fein:1;
+k = 1;
+for i=1:N
+ %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
+ for j=1:10
+  s(k) = a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
+  m(i)*(x_fein(k)-x(i))+f(i);
+  k = k + 1;
+ endfor
+endfor
+
+s(k) = f(N+1);
+
+figure(1);
+plot(x_fein, runge(x_fein), "-;Rungefunktion;", x_fein, ...
+s,"-;Interpolation;")
+	\end{lstlisting}
+	
+	%TODO: Abbildungen: Runge + Interpolation und Fehler mit N=16
+	
 	\subsection{Fehlerbetrachtung}
 	
 	Da $\Delta_M$ zehnmal so fein wie $\Delta_N$ ist, bedeutet das, dass man für jeden Spline den Fehler in 10 Punkten in seinem Definitionsbereich berechnet.
@@ -104,26 +174,84 @@ plot(x_Fehler, y_Fehler, "-; Fehler;")
 % maximaler Fehler E
 E = max(y_Fehler)
 \end{lstlisting}
+
+Für die Fehlerberechnung bei kubischer Interpolation haben wir wieder den Ansatz $s_k(x) = a_k(x-x_k)^3 + b_k(x-x_k)^2 + c_k(x-x_k) + d_k$ verwendet.
+\begin{lstlisting}
+%Fehlerfunktion
+
+k = 1;
+ for i=1:N
+ %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
+ for j=1:10
+  y_Fehler(k) = abs(runge(x_fein(k)) - ...
+  (a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
+  m(i)*(x_fein(k)-x(i))+f(i)));
+  k = k + 1;
+ endfor
+endfor
+
+%Fehler an letzter Stuetzstelle ist 0
+y_Fehler(k) = 0;
+
+figure(2);
+plot(x_fein, y_Fehler, "-; Fehler;")
+
+%Maximaler Fehler
+E = max(y_Fehler);
+\end{lstlisting}
 	
 	\subsection{Diskussion der Ergebnisse}
 	
 	Der maximale Fehler $E(h_N)$ für $N=N_k=4\cdot 2^k$ mit $k=0,...,4$ beträgt:
 	\begin{center}
-		\begin{tabular}{ll|l}
-			$k$ & $N$ & $E(h_N)$ \\
+		\begin{tabular}{ll|l|l}
+			$k$ & $N$ & $E(h_N)$ linear & $E(h_N)$ kubisch \\
 			\hline
-			0 & 4 & 0.17872 \\
+			0 & 4 & 0.17872 & 0.21938 \\
 			\hline
-			1 & 8 & 0.063128 \\
+			1 & 8 & 0.063128 & 0.035509 \\
 			\hline 
-			2 & 16 & 0.053536 \\
+			2 & 16 & 0.053536  & 0.0016935\\
 			\hline 
-			3 & 32 & 0.020652 \\
+			3 & 32 & 0.020652  & 0.00038860\\
 			\hline 
-			4 & 64 & 0.0058496 \\
+			4 & 64 & 0.0058496 & 0.000033560\\
 		\end{tabular}
 	\end{center} 
 
+Man sieht also, dass bei großen $N$ der Fehler sehr klein wird und die kubische Splineinterpolation besser als die lineare Interpolation ist.
+
+Die exponentielle Konvergenzordnung ist
+\begin{center}
+	\begin{tabular}{ll|l|l}
+		$k$ & $N$ & $EOC(h_{N_k},h_{N_{k+1}})$ linear & $EOC(h_{N_k},h_{N_{k+1}})$ kubisch \\
+		\hline
+		0 & 4 & & 2.6272\\
+		\hline
+		1 & 8 & & 4.3901\\
+		\hline
+		2 & 16 & & 2.1237\\
+		\hline
+		3 & 32 & & 3.5334\\
+		\hline
+		4 & 64 & & 3.8869\\
+		\hline
+		5 & 128 & & 3.9719\\
+		\hline
+		6 & 256 & & 3.9930\\
+		\hline
+		7 & 512 & & 3.9982\\
+		\hline
+		8 & 1024 & & 3.9996\\
+		\hline
+		9 & 2048 & & 3.9999\\
+		\hline
+		10 & 4096 & & 4.0000\\
+		\hline
+	\end{tabular}
+\end{center}
+
+Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$
 
 \section{Interpolation der anderen Funktion}
 	\begin{align}
@@ -132,11 +260,61 @@ E = max(y_Fehler)
 	\end{align}
 	
 	\subsection{Berechnung der Splines}
-	\subsubsection{Polynomsplines aus $\mathcal{S}_1^0(\Delta)$}
+	Für Rechenvorschrift siehe \ref{1.1}
 	
-	\subsubsection{Polynomsplines aus $\mathcal{S}_3^1(\Delta)$}
-	
-	\subsection{Fehlerbetrachtung}
+	%TODO: 4 Bilder einfügen
 	
 	\subsection{Diskussion der Ergebnisse}
+	
+	Der maximale Fehler beträgt
+	\begin{center}
+		\begin{tabular}{ll|l|l}
+			$k$ & $N$ & $E(h_N)$ linear & $E(h_N)$ kubisch \\
+			\hline
+			0 & 4 &   & 0.19577 \\
+			\hline
+			1 & 8 &  & 0.070736 \\
+			\hline 
+			2 & 16 &   & 0.027316 \\
+			\hline 
+			3 & 32 &   & 0.010764 \\
+			\hline 
+			4 & 64 &  & 0.0042640 \\
+		\end{tabular}
+	\end{center} 
+
+	Die exponentielle Konvergenzordnung ist
+	\begin{center}
+		\begin{tabular}{ll|l|l}
+			$k$ & $N$ & $EOC(h_{N_k},h_{N_{k+1}})$ linear & $EOC(h_{N_k},h_{N_{k+1}})$ kubisch \\
+			\hline
+			0 & 4 & &1.4686  \\
+			\hline
+			1 & 8 & & 1.3727\\
+			\hline
+			2 & 16 & & 1.3436 \\
+			\hline
+			3 & 32 & & 1.3359 \\
+			\hline
+			4 & 64 & & 1.3340 \\
+			\hline
+			5 & 128 & & 1.3335 \\
+			\hline
+			6 & 256 & & 1.3334 \\
+			\hline
+			7 & 512 & & 1.3333 \\
+			\hline
+			8 & 1024 & & 1.3333 \\
+			\hline
+			9 & 2048 & & 1.3333 \\
+			\hline
+			10 & 4096 & & 1.3333 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$.
+	
+	Offensichtlich ist diese Funktion nicht so gut für eine Splineinterpolation geeignet wie die \person{Runge}-Funktion, weil die maximalen Fehler größer sind und die EOC kleiner ist.
+
 \end{document}

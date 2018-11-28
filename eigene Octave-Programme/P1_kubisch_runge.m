@@ -6,7 +6,7 @@ xreal = -1:0.01:1;
 %    N = input('Anzahl der Stuetzstellen -1 :=N : ')
 for l = 0:11
   N = 4* 2^l
-  
+
   %Abstand Stuetzstellen h
   h = 2./N;
 
@@ -36,7 +36,7 @@ for l = 0:11
   x_fein = -1:h_fein:1;
   k = 1;
   for i=1:N
-    %in jedem dieser Durchläufe ist der Spline-Abschnitt der Selbe
+    %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
     for j=1:10
       s(k) = a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
       m(i)*(x_fein(k)-x(i))+f(i);
@@ -52,7 +52,7 @@ for l = 0:11
 
   k = 1;
   for i=1:N
-    %in jedem dieser Durchläufe ist der Spline-Abschnitt der Selbe
+    %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
     for j=1:10
       y_Fehler(k) = abs(runge(x_fein(k)) - ...
       (a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
