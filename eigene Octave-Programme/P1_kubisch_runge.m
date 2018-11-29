@@ -2,7 +2,6 @@ clear all
 
 runge = @(x) 1./(1+25*x.^2);
 runge_abl = @(x) (-50*x)/(1+25*x^2)^2;
-xreal = -1:0.01:1;
 %    N = input('Anzahl der Stuetzstellen -1 :=N : ')
 for l = 0:11
   N = 4* 2^l
