@@ -72,7 +72,7 @@ plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 	
 	\subsubsection{Polynomsplines aus $\mathcal{S}_3^1(\Delta)$}
 	
-	Das die Interpolationssplines Polynome dritten Grades und einmal stetig differenzierbar sein sollen, nehmen wird aus der Vorlesung den Ansatz (1.7):
+	Da die Interpolationssplines Polynome dritten Grades und einmal stetig differenzierbar sein sollen, nehmen wird aus der Vorlesung den Ansatz (1.7):
 	\begin{align}
 		s_k(x) = a_k(x-x_k)^3 + b_k(x-x_k)^2 + c_k(x-x_k) + d_k\notag
 	\end{align}
@@ -92,12 +92,11 @@ plot(x, f, "-;Interpol.;", xreal, runge(xreal), "-;Rungefkt.;")
 	\begin{lstlisting}
 runge = @(x) 1./(1+25*x.^2);
 runge_abl = @(x) (-50*x)/(1+25*x^2)^2;
-xreal = -1:0.01:1;
 
 N = input('Anzahl der Stuetzstellen -1 :=N : ')
 
 %Abstand Stuetzstellen h
-h = 2./N;
+h = 2/N;
 
 %Stuetzstellen x
 x = -1:h:1;
@@ -347,7 +346,7 @@ Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$. Da EOC ein Maß für die Kon
 		\end{tabular}
 	\end{center}
 	
-	Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$. Wenn EOC ein Maß für die Konvergenzgeschwindigkeit ist, dann konvergieren beide Ansätze - lineare und kubische Splieinterpolation - gleich schnell gegen diese Funktion.
+	Mit $k=11$, $N=8192$ ist $h_{N_k}= \frac{2}{8192}$. Wenn EOC ein Maß für die Konvergenzgeschwindigkeit ist, dann konvergieren beide Ansätze - lineare und kubische Splineinterpolation - gleich schnell gegen diese Funktion.
 	
 	Offensichtlich ist diese Funktion nicht so gut für eine Splineinterpolation geeignet wie die \person{Runge}-Funktion, weil die maximalen Fehler größer sind und die EOC kleiner ist.
 
