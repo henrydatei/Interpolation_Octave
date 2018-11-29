@@ -2,13 +2,12 @@ clear all
 
 fun = @(x) (1+cos(1.5*pi*x)).^(2/3);
 fun_abl = @(x) -pi*sin(1.5*pi*x)*(1+cos(1.5*pi*x))^(-1/3);
-%xreal = -1:0.01:1;
 %N = input('Anzahl der Stuetzstellen -1 :=N : ')
 for l = 0:11
   N = 4* 2^l
   
   %Abstand Stuetzstellen h
-  h = 2./N;
+  h = 2/N;
 
   %Stuetzstellen x
   x = -1:h:1;
@@ -30,13 +29,13 @@ for l = 0:11
     %d(i) = f(i)
   endfor
 
-  %Interpolierende und Runge plotten auf Zerlegung M
+  %Interpolierende und Funktion plotten auf Zerlegung M
   M = 10 * N;
   h_fein = 2/M;
   x_fein = -1:h_fein:1;
   k = 1;
   for i=1:N
-    %in jedem dieser Durchläufe ist der Spline-Abschnitt der Selbe
+    %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
     for j=1:10
       s(k) = a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
       m(i)*(x_fein(k)-x(i))+f(i);
@@ -53,7 +52,7 @@ for l = 0:11
 
   k = 1;
   for i=1:N
-    %in jedem dieser Durchläufe ist der Spline-Abschnitt der Selbe
+    %in jedem dieser Durchlaeufe ist der Spline-Abschnitt der Selbe
     for j=1:10
       y_Fehler(k) = abs(fun(x_fein(k)) - ...
       (a(i)*(x_fein(k)-x(i))^3 +b(i)*(x_fein(k)-x(i))^2 +...
