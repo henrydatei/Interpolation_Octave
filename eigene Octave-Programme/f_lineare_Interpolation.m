@@ -1,3 +1,4 @@
+% Henry_Haustein_Lars_Ortscheidt_P1_Octave
 clear all
 
 fun = @(x) (1+cos(1.5*pi*x)).^(2/3);
